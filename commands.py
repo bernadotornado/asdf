@@ -35,11 +35,11 @@ def PLOT(stock):
             {"date": "2024-01-17", "price": 116},
             {"date": "2024-01-18", "price": 117},
             {"date": "2024-01-19", "price": 118},
-            {"date": "2024-01-20", "price": 150},
+            {"date": "2024-01-20", "price": 119},
             {"date": "2024-01-21", "price": 120},
             {"date": "2024-01-22", "price": 121},
-            {"date": "2024-01-23", "price": 123},
-            {"date": "2024-01-24", "price": 122},
+            {"date": "2024-01-23", "price": 122},
+            {"date": "2024-01-24", "price": 123},
             {"date": "2024-01-25", "price": 124},
             {"date": "2024-01-26", "price": 125},
             {"date": "2024-01-27", "price": 126},
@@ -56,10 +56,12 @@ def PLOT(stock):
     date_format = "%Y-%m-%d"
 
     # Prints header
-    print(f"{stock}")
-    print(f"Price: {today[0]['price']}$")
+    print()
+    print(f"Stock:      ${stock}")
+    print(f"Price:      {today[0]['price']}$")
     print(f"Start date: {start_date}")
-    print(f"End date: {end_date}")
+    print(f"End date:   {end_date}")
+    print()
 
     horizontal_line = "+"+"-"*62+"+"
     print(horizontal_line)
@@ -68,7 +70,7 @@ def PLOT(stock):
         diff_start = datetime.strptime(day['date'], date_format) - datetime.strptime(start_date, date_format)
         padding_left = " " * (diff_start.days * 2)
         padding_right = " " * (diff_end.days * 2)
-        print("|"+padding_left+"**"+padding_right+"| "+str(day['price'])+"$")
+        print("|"+padding_left+"$$"+padding_right+"| "+str(day['price'])+"$")
     print(horizontal_line)
     
 def SAVE(filename):
