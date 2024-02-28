@@ -17,8 +17,10 @@ def main():
 
     # Main loop
     while True:
+        # Get the command
         print("Commands: ADD, DEL, IMPORT, SEARCH, PLOT, SAVE, LOAD, QUIT")
         command = input("Enter a command: ").split()
+
         # Handle qutting the program
         if command[0].upper() == "QUIT":
              commands.QUIT()
@@ -27,6 +29,7 @@ def main():
         if(len (command) < 2):
             commands.ERROR("Missing argument")
             continue
+
         # Call the command
         commands.call(command[0].upper(), command[1])
 

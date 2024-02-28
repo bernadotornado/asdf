@@ -47,13 +47,17 @@ def PLOT(stock):
             {"date": "2024-01-29", "price": 128},
             {"date": "2024-01-30", "price": 129},
             {"date": "2024-01-31", "price": 130}]
+    
     # Sorts the data by price in descending order
     sorted_data = sorted(data, key=lambda x: x["price"], reverse=True)
     
     # Gets the price of the stock at the end date (today)
     today = list(filter(lambda x: x['date'] == end_date, sorted_data))
 
+    # Helpers
     date_format = "%Y-%m-%d"
+    horizontal_line = "+"+"-"*62+"+"
+    to_date = lambda x: datetime.strptime(x, date_format)
 
     # Prints header
     print()
@@ -63,11 +67,11 @@ def PLOT(stock):
     print(f"End date:   {end_date}")
     print()
 
-    horizontal_line = "+"+"-"*62+"+"
+    # Prints the graph
     print(horizontal_line)
     for day in sorted_data:
-        diff_end = datetime.strptime(end_date, date_format) - datetime.strptime(day['date'], date_format)
-        diff_start = datetime.strptime(day['date'], date_format) - datetime.strptime(start_date, date_format)
+        diff_end = to_date(end_date) - to_date(day['date'])
+        diff_start = to_date(day['date']) - to_date(start_date)
         padding_left = " " * (diff_start.days * 2)
         padding_right = " " * (diff_end.days * 2)
         print("|"+padding_left+"$$"+padding_right+"| "+str(day['price'])+"$")
