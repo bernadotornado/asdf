@@ -2,7 +2,7 @@ import commands
 
 def main():
     # Print splash screen
-    print(r"                                        ") 
+    print() 
     print(r" $$$$$$\   $$$$$$\  $$$$$$$\  $$$$$$$$\ ")
     print(r"$$  __$$\ $$  __$$\ $$  __$$\ $$  _____|")
     print(r"$$ /  $$ |$$ /  \__|$$ |  $$ |$$ |      ")
@@ -11,7 +11,7 @@ def main():
     print(r"$$ |  $$ |$$\   $$ |$$ |  $$ |$$ |      © 2024 Rosoll Johanna")
     print(r"$$ |  $$ |\$$$$$$  |$$$$$$$  |$$ |             Szekely Bernat")
     print(r"\__|  \__| \______/ \_______/ \__|             Axel Dultinger")
-    print(r"                                        ")   
+    print()   
     print("Automated    System    for    Dynamic    Finance")   
     print()
 
