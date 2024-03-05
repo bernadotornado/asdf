@@ -2,33 +2,33 @@ import sys
 from datetime import datetime
 import hash
 
-def filter_arrity(arity, args):
+def filter_arity(arity, args):
     if len(args) != arity:
         ERROR(f"Expected {arity} arguments, got {len(args)}\n")
         return False
     return True
 def ADD(stock):
-    if not filter_arrity(1, stock):
+    if not filter_arity(3, stock):
         return
     print(f"Adding {stock}")
     pass
 def DEL(stock):
-    if not filter_arrity(1, stock):
+    if not filter_arity(1, stock):
         return
     print(f"Deleting {stock}")
     pass
 def IMPORT(filename):
-    if not filter_arrity(1, filename):
+    if not filter_arity(1, filename):
         return
     print(f"Importing {filename}")
     pass
 def SEARCH(stock):
-    if not filter_arrity(1, stock):
+    if not filter_arity(1, stock):
         return
     print(f"Searching {stock}")
     pass
 def PLOT(stock):
-    if not filter_arrity(1, stock):
+    if not filter_arity(1, stock):
         return
     # Example data
     start_date = "2024-01-01"
@@ -95,12 +95,12 @@ def PLOT(stock):
     print(horizontal_line)
     
 def SAVE(filename):
-    if not filter_arrity(1, filename):
+    if not filter_arity(1, filename):
         return
     print(f"Saving to {filename}")
     pass
 def LOAD(filename):
-    if not filter_arrity(1, filename):
+    if not filter_arity(1, filename):
         return
     with open(filename, "r") as file:
         for line in file:

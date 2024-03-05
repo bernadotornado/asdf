@@ -2,15 +2,23 @@
 class StockRegistry:
     def __init__(self):
         # allocate memory
-        self.capacity = 1000
+        self.capacity = 1009 # prime number
         self.table = [None] * self.capacity
+        self.taken = 0
 
     def insert(self, stock_id, data):
+        # check if the table is full
+        if self.taken >= self.capacity:
+            return 
+
         # calculate the index
         index = self.calculate_ascii_sum(stock_id) % self.capacity
+
         # attempt to insert the value without collision
         if self.table[index] is None:
             self.table[index] = [stock_id, data]
+            self.taken += 1
+
         # collision
         else:
             collision = 1
@@ -24,6 +32,8 @@ class StockRegistry:
                     break
                 collision += 1
             self.table[index] = [stock_id, data]
+            self.taken += 1
+
     def search(self, stock_id):
         index = self.calculate_ascii_sum(stock_id) % self.capacity
         # return none if not found on first pass
@@ -49,7 +59,7 @@ class StockRegistry:
     # converts the stock id to an integer with weights 10^i for each character
     def calculate_ascii_sum(self, stock_id):
         ascii_sum = 0
-        weights = [1, 10, 100, 1000, 10000, 100000, 1000000, 10000000]
+        weights = [10 ** i for i in range(len(stock_id))]
 
         for i, letter in enumerate(stock_id):
             ascii_sum += ord(letter) * weights[i]
