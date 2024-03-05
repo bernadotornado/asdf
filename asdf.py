@@ -31,7 +31,7 @@ def main():
             continue
 
         # Call the command
-        commands.call(command[0].upper(), command[1])
+        commands.call(command[0].upper(), command[1:])
 
 # Run the main function
 if __name__ == "__main__":
