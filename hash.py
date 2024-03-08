@@ -36,26 +36,48 @@ class StockRegistry:
 
     def search(self, stock_id):
         index = self.calculate_ascii_sum(stock_id) % self.capacity
-        # return none if not found on first pass
+        # guard clause to prevent nonetype destructuring
         if self.table[index] is None:
             return None
+        # return value if key is found on first pass
+        if self.table[index][0] == stock_id:
+            return self.table[index][1]
         else:
             collision = 1
             # checks h(k)+1, h(k)-1, h(k)+4, h(k)-4, h(k)+9, h(k)-9, ...
             # then test if stock id is the same, if not repeat
-            while self.table[index] is not None:
-                if self.table[index][0] == stock_id:
+            while self.table[index][0] != stock_id:
+                positive_offset = (index + 2 ** collision) % self.capacity
+                negative_offset = (index - 2 ** collision) % self.capacity
+                if collision > self.capacity:
+                    break
+                if self.table[positive_offset][0]==stock_id:
+                    index = positive_offset
                     return self.table[index][1]
-                if (index + 2 ** collision) % self.capacity is None:
-                    index = (index + 2 ** collision) % self.capacity
-                    break
-                if (index - 2 ** collision) % self.capacity is None:
-                    index = (index - 2 ** collision) % self.capacity
-                    break
+                if self.table[negative_offset][0]==stock_id:
+                    index = negative_offset
+                    return self.table[index][1]
+              
                 collision += 1
             # return none if not found
             return None
-        
+    def delete (self, stock_id):
+        index = self.calculate_ascii_sum(stock_id) % self.capacity
+        # guard clause to prevent freeing freed memory (False = key not found)
+        if(self.table[index] is None):
+            return False
+        else:
+            # delte if found on fist pass (True = found & freed)
+            if(self.table[index][0] == stock_id):
+                self.table[index] = None
+                return True
+            collision = 1
+            while(self.table[index][0] != stock_id):
+                # TODO: implement delete
+                if(index + 2** collision) % self.capacity :
+                    break
+    
+
     # converts the stock id to an integer with weights 10^i for each character
     def calculate_ascii_sum(self, stock_id):
         ascii_sum = 0
@@ -87,3 +109,10 @@ if __name__ == '__main__':
     print(stocks.search("MSFT"))
     print(stocks.search("AAPL"))
     print(stocks.search("GOOG"))
+    print(stocks.search("CMCSA"))
+    print(stocks.search("TEST"))
+
+    print(stocks.delete("TEST"))
+    stocks.delete("AAPL")
+    
+    print(stocks.search("AAPL"))
