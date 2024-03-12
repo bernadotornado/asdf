@@ -7,27 +7,30 @@ def filter_arity(arity, args):
         ERROR(f"Expected {arity} arguments, got {len(args)}\n")
         return False
     return True
-def ADD(stock):
+def ADD(stock_registry, stock):
     if not filter_arity(3, stock):
         return
     print(f"Adding {stock}")
+    stock_registry.add_stock(stock[0], stock[1], stock[2])
+    print(stock_registry.stock_lookup)
+    print (stock_registry.find_stock("id", "Apple"))
     pass
-def DEL(stock):
+def DEL(stock_registry, stock):
     if not filter_arity(1, stock):
         return
     print(f"Deleting {stock}")
     pass
-def IMPORT(filename):
+def IMPORT(stock_registry, filename):
     if not filter_arity(1, filename):
         return
     print(f"Importing {filename}")
     pass
-def SEARCH(stock):
+def SEARCH(stock_registry, stock):
     if not filter_arity(1, stock):
         return
     print(f"Searching {stock}")
     pass
-def PLOT(stock):
+def PLOT(stock_registry, stock):
     if not filter_arity(1, stock):
         return
     # Example data
@@ -111,7 +114,7 @@ def QUIT():
 def ERROR(msg):
     print("ERROR: "+msg)
     pass
-def call(function_name, *args):
+def call(stock_registry, function_name, *args):
     match function_name:
         case "ADD":     function = ADD
         case "DEL":     function = DEL
@@ -124,5 +127,5 @@ def call(function_name, *args):
         case _:
             ERROR("Invalid command")
             return 
-    result = function(*args)
+    result = function(stock_registry, *args)
     return result

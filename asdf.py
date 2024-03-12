@@ -1,4 +1,5 @@
 import commands
+import hash
 
 def main():
     # Print splash screen
@@ -14,7 +15,7 @@ def main():
     print()   
     print("Automated    System    for    Dynamic    Finance")   
     print()
-
+    stock_registry = hash.StockRegistry()
     # Main loop
     while True:
         # Get the command
@@ -31,8 +32,9 @@ def main():
             continue
 
         # Call the command
-        commands.call(command[0].upper(), command[1:])
+        commands.call(stock_registry, command[0].upper(), command[1:])
 
 # Run the main function
 if __name__ == "__main__":
+    
     main()
