@@ -8,16 +8,14 @@ class StockRegistry:
     # find a stock in the lookup table by id, wkn or name
     def find_stock(self, identifier, value):
         for stock in self.stock_lookup:
-            match identifier:
-                case "id":
-                    if stock[0] == value:
-                        return stock[0]
-                case "wkn":
-                    if stock[1] == value:
-                        return stock[1]
-                case "name":
-                    if stock[2] == value:
-                        return stock[2]
+            if value in stock:
+                match identifier:
+                    case "id":
+                            return stock[0]
+                    case "wkn":
+                            return stock[1]
+                    case "name":
+                            return stock[2]
         return None
     def __init__(self):
         # allocate memory
@@ -136,3 +134,5 @@ if __name__ == '__main__':
     stocks.delete("AAPL")
     
     print(stocks.search("AAPL"))
+    stocks.add_stock("AAPL", "0123123", "Apple")
+    print(stocks.find_stock("id", "Apple"))

@@ -29,6 +29,8 @@ def SEARCH(stock_registry, stock):
     if not filter_arity(1, stock):
         return
     print(f"Searching {stock}")
+    stock_id = stock_registry.find_stock("id", stock[0])
+    print(stock_registry.search(stock_id))
     pass
 def PLOT(stock_registry, stock):
     if not filter_arity(1, stock):
