@@ -45,7 +45,6 @@ def IMPORT(stock_registry, args):
     if not filter_arity(2, args):
         return
     data = parse_csv(args[0])
-    print(data)
     id = stock_registry.find_stock("id", args[1])
     name = stock_registry.find_stock("name", args[1])
     wkn = stock_registry.find_stock("wkn", args[1])
@@ -58,10 +57,10 @@ def SEARCH(stock_registry, stock):
         return
     print(f"Searching {stock}")
     stock_id = stock_registry.find_stock("id", stock[0])
-    print(stock_id)
-    print(stock_registry.table)
     if stock_id is not None:
         print(stock_registry.search(stock_id))
+    else:
+        print("Stock not found")
     pass
 def PLOT(stock_registry, stock):
     if not filter_arity(1, stock):
