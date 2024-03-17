@@ -19,7 +19,7 @@ class StockRegistry:
         return None
     def __init__(self):
         # allocate memory
-        self.capacity = 1009 # prime number
+        self.capacity = 1301 # prime number
         self.table = [None] * self.capacity
         self.taken = 0
         self.stock_lookup = []

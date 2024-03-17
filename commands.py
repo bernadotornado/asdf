@@ -91,7 +91,7 @@ def PLOT(stock_registry, stock):
             {"date": "2024-01-21", "price": 120},
             {"date": "2024-01-22", "price": 121},
             {"date": "2024-01-23", "price": 122},
-            {"date": "2024-01-24", "price": 123},
+            {"date": "2024-01-24", "price": 130},
             {"date": "2024-01-25", "price": 124},
             {"date": "2024-01-26", "price": 125},
             {"date": "2024-01-27", "price": 126},
