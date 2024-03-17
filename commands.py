@@ -1,6 +1,29 @@
 import sys
 from datetime import datetime
 import hash
+import data
+
+
+def parse_csv(filename):
+    index = 0
+    data = []
+    with open(filename, "r") as file:
+        for line in file:
+            if index == 0:
+                index += 1
+                continue
+            line_filtered = [x.strip() for x in line.split(",")]
+            data.append([line_filtered[0],
+                         float(line_filtered[1]),
+                         float(line_filtered[2]),
+                         float(line_filtered[3]),
+                         float(line_filtered[4]),
+                         float(line_filtered[5]),
+                         float(line_filtered[6])])
+            index += 1
+
+    return data 
+
 
 def filter_arity(arity, args):
     if len(args) != arity:
@@ -10,27 +33,35 @@ def filter_arity(arity, args):
 def ADD(stock_registry, stock):
     if not filter_arity(3, stock):
         return
-    print(f"Adding {stock}")
+    print(f"Added {stock[0]}, {stock[1]}, {stock[2]} to the stock registry.")
     stock_registry.add_stock(stock[0], stock[1], stock[2])
-    print(stock_registry.stock_lookup)
-    print (stock_registry.find_stock("id", "Apple"))
     pass
 def DEL(stock_registry, stock):
     if not filter_arity(1, stock):
         return
     print(f"Deleting {stock}")
     pass
-def IMPORT(stock_registry, filename):
-    if not filter_arity(1, filename):
+def IMPORT(stock_registry, args):
+    if not filter_arity(2, args):
         return
-    print(f"Importing {filename}")
+    data = parse_csv(args[0])
+    print(data)
+    id = stock_registry.find_stock("id", args[1])
+    name = stock_registry.find_stock("name", args[1])
+    wkn = stock_registry.find_stock("wkn", args[1])
+    if id is not None:
+        stock_registry.insert(id, data)
+    print(f"Importing {args[0]} into {name}, {wkn} {id}")
     pass
 def SEARCH(stock_registry, stock):
     if not filter_arity(1, stock):
         return
     print(f"Searching {stock}")
     stock_id = stock_registry.find_stock("id", stock[0])
-    print(stock_registry.search(stock_id))
+    print(stock_id)
+    print(stock_registry.table)
+    if stock_id is not None:
+        print(stock_registry.search(stock_id))
     pass
 def PLOT(stock_registry, stock):
     if not filter_arity(1, stock):

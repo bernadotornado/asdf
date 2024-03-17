@@ -23,7 +23,7 @@ class StockRegistry:
         self.table = [None] * self.capacity
         self.taken = 0
         self.stock_lookup = []
-
+    
     def insert(self, stock_id, data):
         # check if the table is full
         if self.taken >= self.capacity:
