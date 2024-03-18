@@ -159,20 +159,23 @@ def SAVE(stock_registry, args):
     filename = args[0]
     table = stock_registry.table
     lookup = stock_registry.stock_lookup
-    with open(filename, "w") as file:
-        data = f"{table}"
-        data = data.replace(" None", "")
-        data = data.replace("[None", "[")
-        file.write(data)
-        file.write("\n")
-        file.write(f"{lookup}")
-        # for stock in table:
-        #     if stock is None:
-        #         file.write(",")
-        #     else:
-        #         file.write(f"{stock},")
-    print(f"Saving to {filename}")
-    pass
+    try:
+        with open(filename, "w") as file:
+            data = f"{table}"
+            data = data.replace(" None", "")
+            data = data.replace("[None", "[")
+            file.write(data)
+            file.write("\n")
+            file.write(f"{lookup}")
+            # for stock in table:
+            #     if stock is None:
+            #         file.write(",")
+            #     else:
+            #         file.write(f"{stock},")
+        print(f"Saving to {filename}")
+    except:
+        print(f"Could not save to {filename}")
+    
 def LOAD(stock_registry, args):
 
     if not filter_arity(1, args):
@@ -192,6 +195,7 @@ def LOAD(stock_registry, args):
         table = table.replace(",, [", ", None, [")
         print(table)
         table = table.replace(",,", " None, None,")
+        table = table.replace(",,", ", None,")
         print(table)
         # table = table.replace(",]", " None, None]")
         # table = table.replace("[,", "[None,")
