@@ -1,7 +1,6 @@
 # implementation of a hash table with quadtratic probing
 class StockRegistry:
-
-
+    
     # add a stock to the lookup table
     def add_stock(self, stock_id, wkn, name):
         self.stock_lookup.append([stock_id, wkn, name])
@@ -45,7 +44,7 @@ class StockRegistry:
 
         # collision
         else:
-            collision = 1
+            collision = 0
             # checks h(k)+1, h(k)-1, h(k)+4, h(k)-4, h(k)+9, h(k)-9, ...
             while self.table[index] is not None:
                 if (index + 2 ** collision) % self.capacity is None:
@@ -67,7 +66,7 @@ class StockRegistry:
         if self.table[index][0] == stock_id:
             return self.table[index][1]
         else:
-            collision = 1
+            collision = 0
             # checks h(k)+1, h(k)-1, h(k)+4, h(k)-4, h(k)+9, h(k)-9, ...
             # then test if stock id is the same, if not repeat
             while self.table[index][0] != stock_id:
@@ -95,9 +94,9 @@ class StockRegistry:
             if(self.table[index][0] == stock_id):
                 self.table[index] = None
                 return True
-            collision = 1
+            # else search for the key and delete it (True = found & freed)
+            collision = 0
             while(self.table[index][0] != stock_id):
-                # TODO: implement delete
                 positive_offset = (index + 2 ** collision) % self.capacity
                 negative_offset = (index - 2 ** collision) % self.capacity
                 if collision > self.capacity:
