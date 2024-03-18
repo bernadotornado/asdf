@@ -39,7 +39,15 @@ def ADD(stock_registry, stock):
 def DEL(stock_registry, stock):
     if not filter_arity(1, stock):
         return
-    print(f"Deleting {stock}")
+    id = stock_registry.find_stock("id", stock[0])
+    name = stock_registry.find_stock("name", stock[0])
+    wkn = stock_registry.find_stock("wkn", stock[0])
+    if id is not None:
+        res = stock_registry.delete(id)
+    if res:
+        print(f"Deleting {name}, {wkn} {id} from the stock registry.")
+    else:
+        print(f"Stock {stock[0]} not found")
     pass
 def IMPORT(stock_registry, args):
     if not filter_arity(2, args):
@@ -57,8 +65,24 @@ def SEARCH(stock_registry, stock):
         return
     print(f"Searching {stock}")
     stock_id = stock_registry.find_stock("id", stock[0])
+    name = stock_registry.find_stock("name", stock[0])
+    wkn = stock_registry.find_stock("wkn", stock[0])
     if stock_id is not None:
-        print(stock_registry.search(stock_id))
+        stock = stock_registry.search(stock_id)
+        if stock is not None:
+            [date, open, high, low, close, adj_close, volume] = stock[:1][0]
+            print(f"Company: {name}")
+            print(f"WKN: {wkn}")
+            print(f"ID: {stock_id}")
+            print(f"Date: {date}")
+            print()
+            print(f"Open: {open}$")
+            print(f"High: {high}$")
+            print(f"Low: {low}$")
+            print(f"Close: {close}$")
+            print(f"Adj Close: {adj_close}$")
+            print(f"Volume: {volume}$")
+            
     else:
         print("Stock not found")
     pass
@@ -129,17 +153,35 @@ def PLOT(stock_registry, stock):
         print("|"+padding_left+"$$"+padding_right+"| "+str(day['price'])+"$")
     print(horizontal_line)
     
-def SAVE(filename):
-    if not filter_arity(1, filename):
+def SAVE(stock_registry, args):
+    if not filter_arity(1, args):
         return
+    filename = args[0]
+    table = stock_registry.table
+    lookup = stock_registry.stock_lookup
+    with open(filename, "w") as file:
+        file.write(f"{table}")
+        file.write("\n")
+        file.write(f"{lookup}")
+        # for stock in table:
+        #     if stock is None:
+        #         file.write(",")
+        #     else:
+        #         file.write(f"{stock},")
     print(f"Saving to {filename}")
     pass
-def LOAD(filename):
-    if not filter_arity(1, filename):
+def LOAD(stock_registry, args):
+
+    if not filter_arity(1, args):
         return
+    filename = args[0]
     with open(filename, "r") as file:
-        for line in file:
-            line.split(",")
+        data = file.readlines()
+        print(f"Loading from {filename}")
+        stock_registry.table =eval(data[0])
+        stock_registry.stock_lookup = eval(data[1])
+        
+        
     pass
 def QUIT():
     sys.exit(0)

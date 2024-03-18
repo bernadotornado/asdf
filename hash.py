@@ -17,6 +17,12 @@ class StockRegistry:
                     case "name":
                             return stock[2]
         return None
+    def delete_stock(self, stock_id):
+        for stock in self.stock_lookup:
+            if stock_id in stock:
+                self.stock_lookup.remove(stock)
+                return True
+        return False
     def __init__(self):
         # allocate memory
         self.capacity = 1301 # prime number
@@ -25,8 +31,8 @@ class StockRegistry:
         self.stock_lookup = []
     
     def insert(self, stock_id, data):
-        # check if the table is full
-        if self.taken >= self.capacity:
+        # check if the table is full (max 1000 in Angabe)
+        if self.taken > 1000:
             return 
 
         # calculate the index
