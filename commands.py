@@ -24,7 +24,7 @@ def parse_csv(filename):
 
     return data 
 
-
+# ERROR guard when the number of arguments is not correct
 def filter_arity(arity, args):
     if len(args) != arity:
         ERROR(f"Expected {arity} arguments, got {len(args)}\n")
@@ -39,13 +39,16 @@ def ADD(stock_registry, stock):
 def DEL(stock_registry, stock):
     if not filter_arity(1, stock):
         return
+    # get data from lookup table
     id = stock_registry.find_stock("id", stock[0])
     name = stock_registry.find_stock("name", stock[0])
     wkn = stock_registry.find_stock("wkn", stock[0])
     if id is not None:
+        # delete stock from lookup table (true if successful, false if not)
         res = stock_registry.delete_stock(id)
         if res:
             print(f"Deleting {name}, {wkn} {id} from the stock registry.")
+            # delete stock from hash table
             stock_registry.delete(id)
         else:
             print(f"Stock {stock[0]} not found")
@@ -55,11 +58,14 @@ def DEL(stock_registry, stock):
 def IMPORT(stock_registry, args):
     if not filter_arity(2, args):
         return
+    # parse csv file from args[0]
     data = parse_csv(args[0])
+    # get data from lookup table
     id = stock_registry.find_stock("id", args[1])
     name = stock_registry.find_stock("name", args[1])
     wkn = stock_registry.find_stock("wkn", args[1])
     if id is not None:
+        # insert data into hash table
         stock_registry.insert(id, data)
         print(f"Importing {args[0]} into {name}, {wkn} {id}")
     else:
@@ -75,7 +81,9 @@ def SEARCH(stock_registry, stock):
     if stock_id is not None:
         stock = stock_registry.search(stock_id)
         if stock is not None:
+            # get last entry data and destructure it
             [date, open, high, low, close, adj_close, volume] = stock[:1][0]
+            # print data
             print(f"Company: {name}")
             print(f"WKN: {wkn}")
             print(f"ID: {stock_id}")
