@@ -43,9 +43,12 @@ def DEL(stock_registry, stock):
     name = stock_registry.find_stock("name", stock[0])
     wkn = stock_registry.find_stock("wkn", stock[0])
     if id is not None:
-        res = stock_registry.delete(id)
-    if res:
-        print(f"Deleting {name}, {wkn} {id} from the stock registry.")
+        res = stock_registry.delete_stock(id)
+        if res:
+            print(f"Deleting {name}, {wkn} {id} from the stock registry.")
+            stock_registry.delete(id)
+        else:
+            print(f"Stock {stock[0]} not found")
     else:
         print(f"Stock {stock[0]} not found")
     pass
@@ -58,8 +61,10 @@ def IMPORT(stock_registry, args):
     wkn = stock_registry.find_stock("wkn", args[1])
     if id is not None:
         stock_registry.insert(id, data)
-    print(f"Importing {args[0]} into {name}, {wkn} {id}")
-    pass
+        print(f"Importing {args[0]} into {name}, {wkn} {id}")
+    else:
+        print(f"Stock {args[1]} not found")
+        
 def SEARCH(stock_registry, stock):
     if not filter_arity(1, stock):
         return
@@ -82,6 +87,8 @@ def SEARCH(stock_registry, stock):
             print(f"Close: {close}$")
             print(f"Adj Close: {adj_close}$")
             print(f"Volume: {volume}$")
+        else:
+            print("Stock not found")
             
     else:
         print("Stock not found")
@@ -167,11 +174,6 @@ def SAVE(stock_registry, args):
             file.write(data)
             file.write("\n")
             file.write(f"{lookup}")
-            # for stock in table:
-            #     if stock is None:
-            #         file.write(",")
-            #     else:
-            #         file.write(f"{stock},")
         print(f"Saving to {filename}")
     except:
         print(f"Could not save to {filename}")
@@ -181,27 +183,21 @@ def LOAD(stock_registry, args):
     if not filter_arity(1, args):
         return
     filename = args[0]
-    with open(filename, "r") as file:
-        data = file.readlines()
-        print(f"Loading from {filename}")
-        table = data[0]
-        lookup = data[1]
-        # table = table.replace("],", "], None,")
-        print(table)
-        table = table.replace("],,", "], None, ")
-        print(table)
-        table = table.replace(",,]", ", None, None]")
-        print(table)
-        table = table.replace(",, [", ", None, [")
-        print(table)
-        table = table.replace(",,", " None, None,")
-        table = table.replace(",,", ", None,")
-        print(table)
-        # table = table.replace(",]", " None, None]")
-        # table = table.replace("[,", "[None,")
-        stock_registry.table =eval(table)
-        stock_registry.stock_lookup = eval(lookup)
-    print(f"{stock_registry.table}")    
+    try:
+        with open(filename, "r") as file:
+            data = file.readlines()
+            print(f"Loading from {filename}")
+            table = data[0]
+            lookup = data[1]
+            table = table.replace("],,", "], None, ")
+            table = table.replace(",,]", ", None, None]")
+            table = table.replace(",, [", ", None, [")
+            table = table.replace(",,", " None, None,")
+            table = table.replace(",,", ", None,")
+            stock_registry.table =eval(table)
+            stock_registry.stock_lookup = eval(lookup)
+    except:
+        print(f"Could not load from {filename}")
         
 def QUIT():
     sys.exit(0)
