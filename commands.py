@@ -160,7 +160,10 @@ def SAVE(stock_registry, args):
     table = stock_registry.table
     lookup = stock_registry.stock_lookup
     with open(filename, "w") as file:
-        file.write(f"{table}")
+        data = f"{table}"
+        data = data.replace(" None", "%")
+        data = data.replace("[None", "[%")
+        file.write(data)
         file.write("\n")
         file.write(f"{lookup}")
         # for stock in table:
@@ -178,8 +181,12 @@ def LOAD(stock_registry, args):
     with open(filename, "r") as file:
         data = file.readlines()
         print(f"Loading from {filename}")
-        stock_registry.table =eval(data[0])
-        stock_registry.stock_lookup = eval(data[1])
+        table = data[0]
+        lookup = data[1]
+        table = table.replace("%", " None")
+        table = table.replace("[%,", "[None,")
+        stock_registry.table =eval(table)
+        stock_registry.stock_lookup = eval(lookup)
         
         
     pass
