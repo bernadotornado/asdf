@@ -161,8 +161,8 @@ def SAVE(stock_registry, args):
     lookup = stock_registry.stock_lookup
     with open(filename, "w") as file:
         data = f"{table}"
-        data = data.replace(" None", "%")
-        data = data.replace("[None", "[%")
+        data = data.replace(" None", "")
+        data = data.replace("[None", "[")
         file.write(data)
         file.write("\n")
         file.write(f"{lookup}")
@@ -183,13 +183,22 @@ def LOAD(stock_registry, args):
         print(f"Loading from {filename}")
         table = data[0]
         lookup = data[1]
-        table = table.replace("%", " None")
-        table = table.replace("[%,", "[None,")
+        # table = table.replace("],", "], None,")
+        print(table)
+        table = table.replace("],,", "], None, ")
+        print(table)
+        table = table.replace(",,]", ", None, None]")
+        print(table)
+        table = table.replace(",, [", ", None, [")
+        print(table)
+        table = table.replace(",,", " None, None,")
+        print(table)
+        # table = table.replace(",]", " None, None]")
+        # table = table.replace("[,", "[None,")
         stock_registry.table =eval(table)
         stock_registry.stock_lookup = eval(lookup)
+    print(f"{stock_registry.table}")    
         
-        
-    pass
 def QUIT():
     sys.exit(0)
 def ERROR(msg):
