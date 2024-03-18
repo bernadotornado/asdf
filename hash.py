@@ -98,8 +98,19 @@ class StockRegistry:
             collision = 1
             while(self.table[index][0] != stock_id):
                 # TODO: implement delete
-                if(index + 2** collision) % self.capacity :
+                positive_offset = (index + 2 ** collision) % self.capacity
+                negative_offset = (index - 2 ** collision) % self.capacity
+                if collision > self.capacity:
                     break
+                if self.table[positive_offset][0]==stock_id:
+                    self.table[index] = None
+                    return True
+                if self.table[negative_offset][0]==stock_id:
+                    self.table[index] = None
+                    return True
+              
+                collision += 1
+            return None
     
 
     # converts the stock id to an integer with weights 10^i for each character
